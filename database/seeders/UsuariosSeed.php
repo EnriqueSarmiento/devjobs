@@ -20,5 +20,15 @@ class UsuariosSeed extends Seeder
             'email' => 'correo@correo.com',
             'password' => Hash::make('12345678'),
         ]);
+        DB::table('users')->insert([
+            'name' => 'enrique',
+            'email' => 'correo2@correo.com',
+            'password' => Hash::make('12345678'),
+        ]);
+        DB::table('users')->insert([
+            'name' => 'pupu',
+            'email' => 'correo3@correo.com',
+            'password' => Hash::make('12345678'),
+        ]);
     }
 }

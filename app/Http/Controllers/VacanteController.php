@@ -13,11 +13,6 @@ use Illuminate\Support\Facades\Storage;
 
 class VacanteController extends Controller
 {
-    public function __construct()
-    {
-        //revisar que este autenticado
-        $this->middleware(['auth']);
-    }
     /**
      * Display a listing of the resource.
      *
@@ -25,7 +20,12 @@ class VacanteController extends Controller
      */
     public function index()
     {
-        return view('vacantes.index');
+        // usando relaciones
+        // $vacantes = auth()->user()->vacantes;
+        //usando modelos
+        $vacantes = vacante::where('user_id', auth()->user()->id)->simplePaginate(3);
+
+        return view('vacantes.index', compact('vacantes'));
     }
 
     /**
@@ -51,7 +51,31 @@ class VacanteController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        //validacion
+        $data = $request->validate([
+            'titulo' => 'required|min:10',
+            'categoria' => 'required',
+            'experiencia' => 'required',
+            'ubicacion' => 'required',
+            'salario' => 'required',
+            'descripcion' => 'required|min:50',
+            'imagen' => 'required',
+            'skills' => 'required'
+        ]);
+
+        //almacenar en la bd
+        auth()->user()->vacantes()->create([
+            'titulo' => $data['titulo'],
+            'imagen' => $data['imagen'],
+            'descripcion' => $data['descripcion'],
+            'skills' => $data['skills'],
+            'categoria_id' => $data['categoria'],
+            'experiencia_id' => $data['experiencia'],
+            'ubicacion_id' => $data['ubicacion'],
+            'salario_id' => $data['salario'],
+
+        ]);
+        return redirect()->action([VacanteController::class, 'index']);
     }
 
     /**
@@ -62,7 +86,8 @@ class VacanteController extends Controller
      */
     public function show(Vacante $vacante)
     {
-        //
+
+        return view('vacantes.show')->with('vacante', $vacante);
     }
 
     /**
@@ -103,7 +128,7 @@ class VacanteController extends Controller
         $imagen = $request->file('file'); //accedemos a la imagen de dropzone
         $nombreimagen = time() . '.' . $imagen->extension(); //asignamos un nombre a esa imagen
         $imagen->move(public_path('storage/vacantes'), $nombreimagen); // se mueve el archivo temporal a la carpeta de storage
-        return response()->json(['correcto' => $nombreimagen]); // se retorna una respuesta tipo json que es recibida por dropzone
+        return response()->json(['correcto' => $nombreimagen, 'idk' => public_path('storage/vacantes')]); // se retorna una respuesta tipo json que es recibida por dropzone
     }
 
     //borrar la imagen via ajax

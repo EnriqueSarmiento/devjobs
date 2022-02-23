@@ -22,6 +22,13 @@
 
 </head>
 <body class="bg-gray-200 min-h-screen leading-none ">
+
+    @if(session('estado'))
+        <div class="bg-teal-500 p-8 text-center text-white font-bold upercase">
+            {{ session('estado') }}
+        </div>
+    @endif
+
     <div id="app">
         <nav class="bg-gray-800 shadow-md py-2">
             <div class="container mx-auto md:px-0">
@@ -54,9 +61,9 @@
                                 @csrf
                             </form>
                         @endguest
-                        
+
                     </div>
-    
+
                 </nav>
             </div>
         </nav>
@@ -65,7 +72,7 @@
                 @yield('navegacion')
             </nav>
         </div>
-        <main class="py-4">
+        <main class="mt-10 container mx-auto">
 
             @yield('content')
         </main>

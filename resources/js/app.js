@@ -4,7 +4,11 @@
  * building robust, powerful web applications using Vue and Laravel.
  */
 
+
+
 require('./bootstrap');
+require('lightbox2');
+
 
 window.Vue = require('vue').default;
 
@@ -30,3 +34,4 @@ Vue.component('lista-skills', require('./components/ListaSkills.vue').default);
 const app = new Vue({
     el: '#app',
 });
+

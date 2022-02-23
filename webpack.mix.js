@@ -1,6 +1,7 @@
 const mix = require('laravel-mix');
 require('tailwindcss');
 require('laravel-mix-tailwind');
+
 /*
  |--------------------------------------------------------------------------
  | Mix Asset Management
@@ -13,6 +14,9 @@ require('laravel-mix-tailwind');
  */
 
 mix.js('resources/js/app.js', 'public/js')
+    .autoload({
+        jquery: ['$', 'window.jQuery', 'jQuery']
+    })
     .vue()
     .sass('resources/sass/app.scss', 'public/css')
     .tailwind()
